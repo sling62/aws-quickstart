@@ -42,6 +42,7 @@ Metadata:
       - ClusterSubnetId
       - LoadBalancerSubnetId
       - LoadBalancerType
+      - KmsKeyId
     - Label:
         default: Access Configuration
       Parameters:
@@ -64,6 +65,8 @@ Metadata:
     ParameterLabels:
       KeyName:
         default: SSH Key
+      KmsKeyId:
+        default: KmsKeyId
       VPCID:
         default: VPC
       AvailabilityZone:
@@ -98,12 +101,17 @@ Metadata:
 
 # The Parameters allow the user to pass custom settings to the stack before creation
 Parameters:
+
   # Required. Calls for the name of an existing EC2 KeyPair, to enable SSH access to the instances
   # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
   KeyName:
     Description: Existing EC2 KeyPair for SSH access.
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
+  KmsKeyId:
+    Description: Enter a unique Encryption key upon creation of EC2 instance to encrypt EC2 volume
+    Type: String
 
   VPCID:
     Description: Existing VPC to use for this cluster.
@@ -490,6 +498,8 @@ Resources:
         Ebs:
           VolumeSize: !Ref DiskSizeGb
           VolumeType: gp2
+          Encrypted: 'true'
+          KmsKeyId: !Ref KmsKeyId
       # The userdata script is launched on startup, but contains only the commands that call out to cfn-init, which runs
       # the commands in the metadata above, and cfn-signal, which signals when the initialization is complete.
       UserData:
@@ -716,6 +726,8 @@ Resources:
         Ebs:
           VolumeSize: !Ref DiskSizeGb
           VolumeType: gp2
+          Encrypted: 'true'
+          KmsKeyId: !Ref KmsKeyId
       # Type of instance; the default is m3.medium
       InstanceType: !Ref InstanceType
       # Adds our SSH key to the instance
