@@ -471,6 +471,22 @@ Resources:
       Tags:
       - Key: Name
         Value: k8s-master
+      - Key: Enviroment
+        Value: dev
+      - Key: Service
+        Value: OpenShift
+      - Key: ServiceComponent
+        Value: master
+      - Key: DeploymentType
+        Value: shared
+      - Key: Client
+        Value: managed
+      - Key: NetworkTier
+        Value: private
+      - Key: User
+        Value: ubuntu
+      - Key: BackupStrategy 
+        Value: None
       - Key: KubernetesCluster
         Value:
           Fn::If:
@@ -640,6 +656,22 @@ Resources:
       - Key: Name
         Value: k8s-node
         PropagateAtLaunch: 'true'
+      - Key: Enviroment
+        Value: dev
+      - Key: Service
+        Value: OpenShift
+      - Key: ServiceComponent
+        Value: ApplicationNode
+      - Key: DeploymentType
+        Value: shared
+      - Key: Client
+        Value: managed
+      - Key: NetworkTier
+        Value: private
+      - Key: User
+        Value: ubuntu
+      - Key: BackupStrategy 
+        Value: None
       - Key: KubernetesCluster
         Value:
           Fn::If:
