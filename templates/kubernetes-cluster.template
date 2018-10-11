@@ -470,7 +470,12 @@ Resources:
       # Tags it with KubernetesCluster=<stackname> or chosen value (needed for cloud-provider's IAM roles)
       Tags:
       - Key: Name
-        Value: k8s-master
+        Value: 
+          Fn::Join:
+          - "-"
+          - - Ref: AWS::StackName
+            - k8s
+            - master
       - Key: Enviroment
         Value: dev
       - Key: Service
@@ -654,7 +659,12 @@ Resources:
       # Tags each node with KubernetesCluster=<stackname> or chosen value (needed for cloud-provider's IAM roles)
       Tags:
       - Key: Name
-        Value: k8s-node
+        Value: 
+          Fn::Join:
+          - "-"
+          - - Ref: AWS::StackName
+            - k8s
+            - node
         PropagateAtLaunch: 'true'
       - Key: Enviroment
         Value: dev
